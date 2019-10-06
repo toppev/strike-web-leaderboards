@@ -1,4 +1,4 @@
-package ga.strikepractice.web;
+package ga.strikepractice.web.leaderboard;
 
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Image;
@@ -20,7 +20,6 @@ public class LeaderboardGrid extends Grid<PlayerDataEntry> {
         addComponentColumn(e -> new Image("https://minotar.net/avatar/" + e.getName() + "/" + SKIN_PIXELS, "")).setFlexGrow(0).setWidth(SKIN_PIXELS + 20 + "px");
         addColumn(PlayerDataEntry::getName).setHeader("Username");
         addColumn(PlayerDataEntry::getValue).setHeader("Amount");
-
     }
 
 }
