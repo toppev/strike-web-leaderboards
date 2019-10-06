@@ -1,0 +1,11 @@
+.idea
+strike-web-leaderboards.iml
+node_modules
+config
+build
+target
+node
+webpack.generated.js
+webpack.config.js
+package.json
+package-lock.json

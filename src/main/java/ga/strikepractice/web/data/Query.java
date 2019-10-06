@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 @Builder
 public class Query {
 
-    private static DataQuerier defaultDataQuerier = new SampleDataQuerier();
+    private static DataQuerier defaultDataQuerier = new FakeDataQuerier();
 
     private final int limit;
     @NonNull
     private final Class<?> dataType;
     @NonNull
-    private final DataColumn dataColumn;
+    private final String dataColumn;
 
     public QueryResult execute() {
         List<PlayerDataEntry> entries = fetchData().entrySet().stream().map(e -> new PlayerDataEntry(e.getKey(), e.getValue())).collect(Collectors.toList());
@@ -33,7 +33,7 @@ public class Query {
      * @return a sorted map with the usernames as keys and the corresponding values
      */
     private Map<String, ?> fetchData() {
-        return defaultDataQuerier.querySorted(dataColumn.getColumnName(), dataType, limit);
+        return defaultDataQuerier.querySorted(dataColumn, dataType, limit);
     }
 
     public void executeAsync(Consumer<QueryResult> resultConsumer) {

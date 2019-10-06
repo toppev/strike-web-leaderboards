@@ -4,7 +4,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class SampleDataQuerier implements DataQuerier {
+/**
+ * {@link DataQuerier} used for testing
+ */
+public class FakeDataQuerier implements DataQuerier {
 
     /**
      * Sample usernames used in this {@link DataQuerier}

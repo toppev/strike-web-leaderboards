@@ -6,11 +6,11 @@ import ga.strikepractice.web.data.PlayerDataEntry;
 
 import java.util.List;
 
-public class LeaderboardLayout extends Grid<PlayerDataEntry> {
+public class LeaderboardGrid extends Grid<PlayerDataEntry> {
 
     private static final int SKIN_PIXELS = 20;
 
-    public LeaderboardLayout(List<PlayerDataEntry> entries) {
+    public LeaderboardGrid(List<PlayerDataEntry> entries) {
         getStyle().set("flex", "none");
         setWidth("400px");
         setHeight("450px");

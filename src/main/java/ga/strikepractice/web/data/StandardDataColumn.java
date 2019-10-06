@@ -2,7 +2,7 @@ package ga.strikepractice.web.data;
 
 import lombok.Getter;
 
-public enum DataColumn {
+public enum StandardDataColumn {
 
     KILLS("kills"),
     DEATHS("deaths"),
@@ -15,7 +15,7 @@ public enum DataColumn {
     @Getter
     private String columnName;
 
-    DataColumn(String columnName) {
+    StandardDataColumn(String columnName) {
         this.columnName = columnName;
     }
 }
