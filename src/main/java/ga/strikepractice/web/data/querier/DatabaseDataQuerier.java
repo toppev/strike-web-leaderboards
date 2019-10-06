@@ -1,4 +1,4 @@
-package ga.strikepractice.web.data;
+package ga.strikepractice.web.data.querier;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class DefaultDataQuerier implements DataQuerier {
+public class DatabaseDataQuerier implements DataQuerier {
 
     private static final String STATS_TABLE = "stats";
 

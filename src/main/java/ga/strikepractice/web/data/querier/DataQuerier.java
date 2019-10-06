@@ -1,4 +1,4 @@
-package ga.strikepractice.web.data;
+package ga.strikepractice.web.data.querier;
 
 import java.util.Map;
 

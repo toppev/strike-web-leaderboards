@@ -1,5 +1,7 @@
 package ga.strikepractice.web.data;
 
+import ga.strikepractice.web.data.querier.DataQuerier;
+import ga.strikepractice.web.data.querier.FakeDataQuerier;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
