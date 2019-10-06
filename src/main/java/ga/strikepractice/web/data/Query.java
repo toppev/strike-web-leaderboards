@@ -16,11 +16,10 @@ public class Query {
 
     private static DataQuerier defaultDataQuerier = new FakeDataQuerier();
 
-    private final int limit;
+    @Builder.Default
+    private int limit = 10;
     @NonNull
-    private final Class<?> dataType;
-    @NonNull
-    private final String dataColumn;
+    private String dataColumn;
 
     public QueryResult execute() {
         List<PlayerDataEntry> entries = fetchData().entrySet().stream().map(e -> new PlayerDataEntry(e.getKey(), e.getValue())).collect(Collectors.toList());
@@ -32,8 +31,8 @@ public class Query {
      *
      * @return a sorted map with the usernames as keys and the corresponding values
      */
-    private Map<String, ?> fetchData() {
-        return defaultDataQuerier.querySorted(dataColumn, dataType, limit);
+    private Map<String, Integer> fetchData() {
+        return defaultDataQuerier.querySorted(dataColumn, limit);
     }
 
     public void executeAsync(Consumer<QueryResult> resultConsumer) {
