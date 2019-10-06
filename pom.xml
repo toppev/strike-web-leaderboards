@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ga.strikepractice</groupId>
     <artifactId>strike-web-leaderboards</artifactId>
@@ -13,17 +15,19 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
 
+        <!-- Versions -->
         <vaadin.version>14.0.7</vaadin.version>
         <node.version>v10.16.3</node.version>
 
     </properties>
 
     <repositories>
-        <!-- Repository used by many Vaadin add-ons -->
         <repository>
-             <id>Vaadin Directory</id>
-             <url>https://maven.vaadin.com/vaadin-addons</url>
-            <snapshots><enabled>false</enabled></snapshots>
+            <id>Vaadin Repository</id>
+            <url>https://maven.vaadin.com/vaadin-addons</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -42,7 +46,6 @@
     <dependencies>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <!-- Replace artifactId with vaadin to include commercial components too-->
             <artifactId>vaadin-core</artifactId>
             <exclusions>
                 <!-- Webjars are only needed when running in Vaadin 13 compatibility mode -->
@@ -74,12 +77,10 @@
         </dependency>
 
         <!-- Added to provide logging output as Vaadin uses -->
-        <!-- the unbound SLF4J no-operation (NOP) logger implementation -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -92,7 +93,6 @@
             <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -108,18 +108,8 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.4.19.v20190610</version>
-                <configuration>
-                    <!-- If using IntelliJ IDEA with autocompilation, this
-                    might cause lots of unnecessary compilations in the
-                    background.-->
-                    <scanIntervalSeconds>2</scanIntervalSeconds>
-                    <!-- Use war output directory to get the webpack files -->
-                    <webAppConfig>
-                        <allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
-                    </webAppConfig>
-                </configuration>
             </plugin>
-            <!-- Plugin to download and install Node and npm locally -->
+            <!-- Installs Node and npm -->
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
@@ -136,12 +126,7 @@
                     <nodeVersion>${node.version}</nodeVersion>
                 </configuration>
             </plugin>
-
-            <!--
-                Take care of synchronizing java dependencies and imports in
-                package.json and main.js files.
-                It also creates webpack.config.js if not exists yet.
-            -->
+            <!-- Does stuff with the .js files -->
             <plugin>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-maven-plugin</artifactId>
@@ -159,7 +144,7 @@
 
     <profiles>
         <profile>
-            <!-- Production mode is activated using -Pproduction -->
+            <!-- Enable production with -Pproduction -->
             <id>production</id>
             <properties>
                 <vaadin.productionMode>true</vaadin.productionMode>
