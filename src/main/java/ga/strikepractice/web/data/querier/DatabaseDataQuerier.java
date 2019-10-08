@@ -25,7 +25,7 @@ public class DatabaseDataQuerier implements DataQuerier {
     private final MySQLConnector connector = new MySQLConnector();
 
     public DatabaseDataQuerier() {
-        connector.connectAndPrepare();
+        connector.connect();
     }
 
     private static String getEnvOrDefault(String path, String defaultValue) {
@@ -38,7 +38,7 @@ public class DatabaseDataQuerier implements DataQuerier {
         try {
             return queryDatabase(key, limit);
         } catch (SQLException e) {
-            logger.error("Failed to query database", e);
+            logger.error("Failed to query database key=" + key + ", limit=" + limit, e);
         }
         return new HashMap<>();
     }
@@ -46,10 +46,12 @@ public class DatabaseDataQuerier implements DataQuerier {
 
     private LinkedHashMap<String, Integer> queryDatabase(String column, int limit) throws SQLException {
         LinkedHashMap<String, Integer> top = new LinkedHashMap<>();
+        // TODO: Should cache this PreparedStatement, though it's  called from other threads so not sure if that's a good idea
+        PreparedStatement ps = connector.conn.prepareStatement("SELECT * " + " from " + MySQLConnector.STATS_TABLE + " order by ? desc limit ?");
         // Indexes start at 1
-        PreparedStatement ps = connector.getPreparedStatement();
         ps.setString(1, column);
         ps.setInt(2, limit);
+
         try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 String player = rs.getString("username");
@@ -67,9 +69,8 @@ public class DatabaseDataQuerier implements DataQuerier {
         private static final String STATS_TABLE = "stats";
 
         private Connection conn;
-        private PreparedStatement preparedStatement;
 
-        private void connectAndPrepare() {
+        private void connect() {
             String host = getEnvOrDefault("STRIKE_WEB_HOST", "localhost");
             String port = getEnvOrDefault("STRIKE_WEB_PORT", "3306");
             String database = getEnvOrDefault("STRIKE_WEB_DATABASE", "strikepractice");
@@ -83,14 +84,9 @@ public class DatabaseDataQuerier implements DataQuerier {
             logger.info("password: <" + password.length() + " characters>");
             try {
                 conn = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, user, password);
-                preparedStatement = conn.prepareStatement("SELECT * " + " from " + STATS_TABLE + " order by ? desc limit ?");
             } catch (SQLException e) {
                 logger.error("Failed to connect to the StrikePractice database", e);
             }
-        }
-
-        public PreparedStatement getPreparedStatement() {
-            return preparedStatement;
         }
     }
 }

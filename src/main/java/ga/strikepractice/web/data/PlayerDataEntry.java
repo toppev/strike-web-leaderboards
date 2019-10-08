@@ -14,4 +14,6 @@ public class PlayerDataEntry {
 
     private final int value;
 
+    private final int rank;
+
 }
