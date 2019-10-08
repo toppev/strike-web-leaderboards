@@ -22,25 +22,15 @@ import java.util.Map;
 @Slf4j
 public class DatabaseDataQuerier implements DataQuerier {
 
-    private static final String STATS_TABLE = "stats";
+    private final MySQLConnector connector = new MySQLConnector();
 
-    private static Connection conn;
+    public DatabaseDataQuerier() {
+        connector.connectAndPrepare();
+    }
 
-    static {
-        String host = System.getenv("STRIKE_WEB_HOST");
-        String port = System.getenv("STRIKE_WEB_PORT");
-        String database = System.getenv("STRIKE_WEB_DATABASE");
-        if (database == null || database.isEmpty()) {
-            // Default database name
-            database = "StrikePractice";
-        }
-        String user = System.getenv("STRIKE_WEB_USER");
-        String password = System.getenv("STRIKE_WEB_PASSWORD");
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, user, password);
-        } catch (SQLException e) {
-            logger.error("Failed to connect to the StrikePractice database", e);
-        }
+    private static String getEnvOrDefault(String path, String defaultValue) {
+        String env = System.getenv(path);
+        return env != null ? env : defaultValue;
     }
 
     @Override
@@ -56,12 +46,10 @@ public class DatabaseDataQuerier implements DataQuerier {
 
     private LinkedHashMap<String, Integer> queryDatabase(String column, int limit) throws SQLException {
         LinkedHashMap<String, Integer> top = new LinkedHashMap<>();
-        String query = "SELECT username, ? from " + STATS_TABLE + " order by ? desc limit ?";
-        PreparedStatement ps = conn.prepareStatement(query);
         // Indexes start at 1
+        PreparedStatement ps = connector.getPreparedStatement();
         ps.setString(1, column);
-        ps.setString(2, column);
-        ps.setInt(3, limit);
+        ps.setInt(2, limit);
         try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 String player = rs.getString("username");
@@ -71,5 +59,38 @@ public class DatabaseDataQuerier implements DataQuerier {
             }
         }
         return top;
+    }
+
+
+    class MySQLConnector {
+
+        private static final String STATS_TABLE = "stats";
+
+        private Connection conn;
+        private PreparedStatement preparedStatement;
+
+        private void connectAndPrepare() {
+            String host = getEnvOrDefault("STRIKE_WEB_HOST", "localhost");
+            String port = getEnvOrDefault("STRIKE_WEB_PORT", "3306");
+            String database = getEnvOrDefault("STRIKE_WEB_DATABASE", "strikepractice");
+            // Although I don't recommend running as root
+            String user = getEnvOrDefault("STRIKE_WEB_USER", "root");
+            String password = getEnvOrDefault("STRIKE_WEB_PASSWORD", "password123");
+            logger.info("host: " + host);
+            logger.info("port: " + port);
+            logger.info("database: " + database);
+            logger.info("user: " + user);
+            logger.info("password: <" + password.length() + " characters>");
+            try {
+                conn = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, user, password);
+                preparedStatement = conn.prepareStatement("SELECT * " + " from " + STATS_TABLE + " order by ? desc limit ?");
+            } catch (SQLException e) {
+                logger.error("Failed to connect to the StrikePractice database", e);
+            }
+        }
+
+        public PreparedStatement getPreparedStatement() {
+            return preparedStatement;
+        }
     }
 }
