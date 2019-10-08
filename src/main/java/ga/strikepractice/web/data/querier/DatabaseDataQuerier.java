@@ -9,6 +9,13 @@ import java.util.Map;
 
 /**
  * Basic SQL database {@link DataQuerier}
+ * <p>
+ * Environment variables:
+ * STRIKE_WEB_HOST - the host
+ * STRIKE_WEB_PORT - the port
+ * STRIKE_WEB_DATABASE - the db name, by default "StrikePractice"
+ * STRIKE_WEB_USER - the user
+ * STRIKE_WEB_PASSWORD - the password
  */
 @Slf4j
 public class DatabaseDataQuerier implements DataQuerier {
