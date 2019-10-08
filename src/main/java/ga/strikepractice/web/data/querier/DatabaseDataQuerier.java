@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Basic SQL database {@link DataQuerier}
+ */
 public class DatabaseDataQuerier implements DataQuerier {
 
     private static final String STATS_TABLE = "stats";

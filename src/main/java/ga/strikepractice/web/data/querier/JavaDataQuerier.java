@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * This {@link DataQuerier} can query if it has same {@link ClassLoader} as the plugin.
+ */
 public class JavaDataQuerier implements DataQuerier {
 
     @Override

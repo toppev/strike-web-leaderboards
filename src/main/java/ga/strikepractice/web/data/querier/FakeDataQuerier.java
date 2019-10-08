@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * {@link DataQuerier} used for testing
+ * {@link DataQuerier} used for testing, generates random data
  */
 public class FakeDataQuerier implements DataQuerier {
 
