@@ -11,6 +11,7 @@ import ga.strikepractice.web.leaderboard.Leaderboard;
 import ga.strikepractice.web.leaderboard.LeaderboardGrid;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Route("")
 @CssImport("./styles/custom.css")
@@ -20,20 +21,28 @@ public class StrikeWebLeaderboards extends FlexLayout {
 
     static {
         // TODO: fetch from config or database
-        eloKits = new String[]{"nodebuff", "builduhc"};
+        eloKits = new String[]{};
     }
 
     public StrikeWebLeaderboards() {
         this.getStyle().set("flex-wrap", "wrap");
         this.getStyle().set("justify-content", "flex-start");
         for (StandardDataColumn dataColumn : StandardDataColumn.values()) {
-            Leaderboard leaderboard = new Leaderboard(dataColumn, new LeaderboardGrid(getData(dataColumn.getColumnName())));
+            Leaderboard leaderboard = createLeaderboard(dataColumn.toString(), dataColumn.getColumnName());
             add(leaderboard);
         }
         for (String eloKit : eloKits) {
-            Leaderboard leaderboard = new Leaderboard(eloKit, new LeaderboardGrid(getData(eloKit)));
+            Leaderboard leaderboard = createLeaderboard(eloKits.toString().toUpperCase(), eloKit);
             add(leaderboard);
         }
+    }
+
+    private Leaderboard createLeaderboard(String name, String column) {
+        Leaderboard leaderboard = new Leaderboard(column, new LeaderboardGrid());
+        CompletableFuture.runAsync(() -> {
+            leaderboard.getLeaderboardGrid().setItems(getData(column));
+        });
+        return leaderboard;
     }
 
     private List<PlayerDataEntry> getData(String dataColumn) {

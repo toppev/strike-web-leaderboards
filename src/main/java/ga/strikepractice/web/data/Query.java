@@ -1,22 +1,22 @@
 package ga.strikepractice.web.data;
 
 import ga.strikepractice.web.data.querier.DataQuerier;
-import ga.strikepractice.web.data.querier.FakeDataQuerier;
+import ga.strikepractice.web.data.querier.DatabaseDataQuerier;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
 public class Query {
 
-    private static DataQuerier defaultDataQuerier = new FakeDataQuerier();
+    private static DataQuerier defaultDataQuerier = new DatabaseDataQuerier();
 
     @Builder.Default
     private int limit = 10;
@@ -24,7 +24,12 @@ public class Query {
     private String dataColumn;
 
     public QueryResult execute() {
-        List<PlayerDataEntry> entries = fetchData().entrySet().stream().map(e -> new PlayerDataEntry(e.getKey(), e.getValue())).collect(Collectors.toList());
+        Map<String, Integer> map = fetchData();
+        List<PlayerDataEntry> entries = new ArrayList<>();
+        int rank = 1;
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            entries.add(new PlayerDataEntry(entry.getKey(), entry.getValue(), rank));
+        }
         return new QueryResult(entries);
     }
 
