@@ -11,11 +11,13 @@ import java.util.Map;
  * Basic SQL database {@link DataQuerier}
  * <p>
  * Environment variables:
- * STRIKE_WEB_HOST - the host
- * STRIKE_WEB_PORT - the port
- * STRIKE_WEB_DATABASE - the db name, by default "StrikePractice"
- * STRIKE_WEB_USER - the user
- * STRIKE_WEB_PASSWORD - the password
+ * <ul>
+ *     <li>STRIKE_WEB_HOST - the host</li>
+ *     <li>STRIKE_WEB_PORT - the port</li>
+ *     <li>STRIKE_WEB_DATABASE - the db name, by default "StrikePractice"</li>
+ *     <li>STRIKE_WEB_USER - the user</li>
+ *     <li>STRIKE_WEB_PASSWORD - the password</li>
+ * </ul>
  */
 @Slf4j
 public class DatabaseDataQuerier implements DataQuerier {
