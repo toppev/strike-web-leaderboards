@@ -47,7 +47,7 @@ public class DatabaseDataQuerier implements DataQuerier {
     private LinkedHashMap<String, Integer> queryDatabase(String column, int limit) throws SQLException {
         LinkedHashMap<String, Integer> top = new LinkedHashMap<>();
         // TODO: Should cache this PreparedStatement, though it's  called from other threads so not sure if that's a good idea
-        PreparedStatement ps = connector.conn.prepareStatement("SELECT * " + " from " + MySQLConnector.STATS_TABLE + " order by ? desc limit ?");
+        PreparedStatement ps = connector.conn.prepareStatement("SELECT username," + column + " from " + MySQLConnector.STATS_TABLE + " order by ? desc limit ?");
         // Indexes start at 1
         ps.setString(1, column);
         ps.setInt(2, limit);
@@ -81,7 +81,7 @@ public class DatabaseDataQuerier implements DataQuerier {
             logger.info("port: " + port);
             logger.info("database: " + database);
             logger.info("user: " + user);
-            logger.info("password: <" + password.length() + " characters>");
+            logger.info(password.equals("password123") ? "password123 (DEFAULT PASSWORD, CHANGE IT)" : ("password: <" + password.length() + " characters>"));
             try {
                 conn = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, user, password);
             } catch (SQLException e) {
