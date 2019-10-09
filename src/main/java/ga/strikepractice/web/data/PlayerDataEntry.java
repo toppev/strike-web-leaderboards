@@ -5,13 +5,15 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PlayerDataEntry<T>{
+public class PlayerDataEntry {
 
     /**
      * The player's name
      */
     private final String name;
 
-    private final T value;
+    private final int value;
+
+    private final int rank;
 
 }
