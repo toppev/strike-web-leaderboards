@@ -81,7 +81,7 @@ public class DatabaseDataQuerier implements DataQuerier {
             logger.info("port: " + port);
             logger.info("database: " + database);
             logger.info("user: " + user);
-            logger.info("password: <" + password.length() + " characters>");
+            logger.info(password.equals("password123") ? "password123 (DEFAULT PASSWORD, CHANGE IT)" : ("password: <" + password.length() + " characters>"));
             try {
                 conn = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, user, password);
             } catch (SQLException e) {
