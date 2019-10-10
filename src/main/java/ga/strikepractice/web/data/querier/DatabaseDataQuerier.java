@@ -87,8 +87,8 @@ public class DatabaseDataQuerier implements DataQuerier {
         private String getVariableOrDefault(String property, String envVariable, String defaultValue) {
             String prop = System.getProperty(property);
             String env = System.getenv(envVariable);
-            // first property, then environment variable and lastly default value
-            return prop != null ? prop : env != null ? env : defaultValue;
+            // first environment variable then property and lastly default value
+            return env != null ? env : prop != null ? prop : defaultValue;
         }
     }
 }

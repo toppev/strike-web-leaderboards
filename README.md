@@ -27,7 +27,7 @@ This is where you can configure the [variables](#variables).
 
 
 ### Variables
-There are a few variables you can set as environment variables or as Java properties specified with a `-D`. If both are set properties are preferred.
+There are a few variables you can set as environment variables or as Java properties specified with a `-D`. If both are set environment variables are preferred.
 These variables are used to connect to the MySQL database.
 
 | Environment Variable  | Java Property | Description |
