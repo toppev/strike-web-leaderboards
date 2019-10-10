@@ -66,12 +66,12 @@ public class DatabaseDataQuerier implements DataQuerier {
         private Connection conn;
 
         private void connect() {
-            String host = getVariableOrDefault("databaseHost","STRIKE_WEB_HOST", "localhost");
-            String port = getVariableOrDefault("databasePort", "STRIKE_WEB_PORT", "3306");
-            String database = getVariableOrDefault("database", "STRIKE_WEB_DATABASE", "strikepractice");
+            String host = getVariableOrDefault("database.host","STRIKE_WEB_HOST", "localhost");
+            String port = getVariableOrDefault("database.port", "STRIKE_WEB_PORT", "3306");
+            String database = getVariableOrDefault("database.name", "STRIKE_WEB_DATABASE", "strikepractice");
             // Although I don't recommend running as root
-            String user = getVariableOrDefault("databaseUser","STRIKE_WEB_USER", "root");
-            String password = getVariableOrDefault("databasePassword","STRIKE_WEB_PASSWORD", "password123");
+            String user = getVariableOrDefault("database.user","STRIKE_WEB_USER", "root");
+            String password = getVariableOrDefault("database.password","STRIKE_WEB_PASSWORD", "password123");
             logger.info("host: " + host);
             logger.info("port: " + port);
             logger.info("database: " + database);
