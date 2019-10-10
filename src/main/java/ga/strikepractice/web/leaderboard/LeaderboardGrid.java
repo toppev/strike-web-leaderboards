@@ -17,7 +17,7 @@ public class LeaderboardGrid extends Grid<PlayerDataEntry> {
 
     public LeaderboardGrid() {
         getStyle().set("flex", "none");
-        setWidth("400px");
+        setWidth("360px");
         setHeight("450px");
         setSelectionMode(SelectionMode.NONE);
         addColumn(PlayerDataEntry::getRank).setHeader("Rank").setFlexGrow(0).setWidth("70px");
