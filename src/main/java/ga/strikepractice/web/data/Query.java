@@ -26,9 +26,9 @@ public class Query {
     public QueryResult execute() {
         Map<String, Integer> map = fetchData();
         List<PlayerDataEntry> entries = new ArrayList<>();
-        int rank = 1;
+        int rank = 0;
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            entries.add(new PlayerDataEntry(entry.getKey(), entry.getValue(), rank));
+            entries.add(new PlayerDataEntry(entry.getKey(), entry.getValue(), ++rank));
         }
         return new QueryResult(entries);
     }
