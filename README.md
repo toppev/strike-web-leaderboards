@@ -27,7 +27,7 @@ This is where you can configure the [variables](#variables).
 
 
 ### Variables
-There are a few variables you can set as environment variables or as Java properties specified with a `-D`. If both are set properties are preferred.
+There are a few variables you can set as environment variables or as Java properties specified with a `-D`. If both are set environment variables are preferred.
 These variables are used to connect to the MySQL database.
 
 | Environment Variable  | Java Property | Description |
@@ -37,3 +37,35 @@ These variables are used to connect to the MySQL database.
 | `STRIKE_WEB_DATABASE` | `-Ddatabase.name=strikepractice` | the database name, by default 'strikepractice' |
 | `STRIKE_WEB_USER` | `-Ddatabase.user=someuser` | the user, 'root' by default, recommended to change it |
 | `STRIKE_WEB_PASSWORD` | `-Ddatabase.password=mypass` | the password, 'password123' by default, change it |
+
+### Embedding
+Unfortunately, there doesn't seem to be any very good way to embed a Vaadin Flow application on a website (correct if I'm wrong).
+
+However, we can use iframes:
+
+- Add this html but change the `src` to the correct url.
+```
+<div class="lb-container">
+    <iframe class="lb-iframe" src="http://localhost:8080/leaderboards"></iframe>
+</div>
+```
+- And add this custom CSS to make it flexible.
+```
+.lb-container {
+  /* Position relative to the wrapping element */
+  position: relative;
+  overflow: hidden;
+  /* Handles the aspect ratio, you can try changing this */
+  padding-top: 200%;
+}
+
+.lb-iframe {
+  /* Let's this be position over the padding of the wrapper */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+```

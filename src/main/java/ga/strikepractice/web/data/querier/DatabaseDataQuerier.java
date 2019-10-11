@@ -28,11 +28,6 @@ public class DatabaseDataQuerier implements DataQuerier {
         connector.connect();
     }
 
-    private static String getEnvOrDefault(String path, String defaultValue) {
-        String env = System.getenv(path);
-        return env != null ? env : defaultValue;
-    }
-
     @Override
     public Map<String, Integer> querySorted(String key, int limit) {
         try {
@@ -71,22 +66,29 @@ public class DatabaseDataQuerier implements DataQuerier {
         private Connection conn;
 
         private void connect() {
-            String host = getEnvOrDefault("STRIKE_WEB_HOST", "localhost");
-            String port = getEnvOrDefault("STRIKE_WEB_PORT", "3306");
-            String database = getEnvOrDefault("STRIKE_WEB_DATABASE", "strikepractice");
+            String host = getVariableOrDefault("database.host","STRIKE_WEB_HOST", "localhost");
+            String port = getVariableOrDefault("database.port", "STRIKE_WEB_PORT", "3306");
+            String database = getVariableOrDefault("database.name", "STRIKE_WEB_DATABASE", "strikepractice");
             // Although I don't recommend running as root
-            String user = getEnvOrDefault("STRIKE_WEB_USER", "root");
-            String password = getEnvOrDefault("STRIKE_WEB_PASSWORD", "password123");
+            String user = getVariableOrDefault("database.user","STRIKE_WEB_USER", "root");
+            String password = getVariableOrDefault("database.password","STRIKE_WEB_PASSWORD", "password123");
             logger.info("host: " + host);
             logger.info("port: " + port);
             logger.info("database: " + database);
             logger.info("user: " + user);
-            logger.info(password.equals("password123") ? "password123 (DEFAULT PASSWORD, CHANGE IT)" : ("password: <" + password.length() + " characters>"));
+            logger.info("password: " + (password.equals("password123") ? "password123 (DEFAULT PASSWORD, CHANGE IT)" : ("<" + password.length() + " characters>")));
             try {
                 conn = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, user, password);
             } catch (SQLException e) {
                 logger.error("Failed to connect to the StrikePractice database", e);
             }
+        }
+
+        private String getVariableOrDefault(String property, String envVariable, String defaultValue) {
+            String prop = System.getProperty(property);
+            String env = System.getenv(envVariable);
+            // first environment variable then property and lastly default value
+            return env != null ? env : prop != null ? prop : defaultValue;
         }
     }
 }
