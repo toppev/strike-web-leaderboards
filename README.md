@@ -43,13 +43,13 @@ Unfortunately, there doesn't seem to be any very good way to embed a Vaadin Flow
 
 However, we can use iframes:
 
-- Add this html but change the `src` to the correct url.
+- Add this html but change the `src` to a proper url.
 ```
 <div class="lb-container">
     <iframe class="lb-iframe" src="http://localhost:8080/leaderboards"></iframe>
 </div>
 ```
-- And add this custom CSS to make it flexible.
+- Add this custom CSS to make it responsive.
 ```
 .lb-container {
   /* Position relative to the wrapping element */
