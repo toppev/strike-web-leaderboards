@@ -35,12 +35,12 @@ public class DatabaseDataQuerier implements DataQuerier {
         } catch (SQLException e) {
             logger.error("Failed to query database key=" + key + ", limit=" + limit, e);
         }
-        return new HashMap<>();
+        return new LinkedHashMap<>();
     }
 
 
-    private LinkedHashMap<String, Integer> queryDatabase(String column, int limit) throws SQLException {
-        LinkedHashMap<String, Integer> top = new LinkedHashMap<>();
+    private Map<String, Integer> queryDatabase(String column, int limit) throws SQLException {
+        Map<String, Integer> top = new LinkedHashMap<>();
         // TODO: Should cache this PreparedStatement, though it's  called from other threads so not sure if that's a good idea
         PreparedStatement ps = connector.conn.prepareStatement("SELECT username," + column + " from " + MySQLConnector.STATS_TABLE + " order by ? desc limit ?");
         // Indexes start at 1
